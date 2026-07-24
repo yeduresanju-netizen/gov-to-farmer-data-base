@@ -1,38 +1,6 @@
 {
   "sellers": [
     {
-      "id": "SEL_1001",
-      "farmer_name": "रामराव पाटील",
-      "phone_number": "9876543210",
-      "crop_name": "गहू",
-      "quantity_quintal": 25,
-      "grade": "A",
-      "price_per_quintal": "₹ 2400",
-      "location": "नाशिक, महाराष्ट्र",
-      "remark": "उत्तम प्रतीचा सेंद्रिय गहू उपलब्ध आहे.",
-      "created_at": "2026-07-24T10:30:00Z"
-    },
-    {
-      "id": "SEL_1002",
-      "farmer_name": "संजय देशमूख",
-      "phone_number": "9123456789",
-      "crop_name": "सोयाबीन",
-      "quantity_quintal": 50,
-      "grade": "B",
-      "price_per_quintal": "₹ 4800",
-      "location": "लातूर, महाराष्ट्र",
-      "remark": "तातडीने विक्री करणे आहे.",
-      "created_at": "2026-07-24T11:15:00Z"
-    },
-    {
-      "id": "SEL_1784893283154",
-      "crop_name": "गहू",
-      "quantity_quintal": "25",
-      "grade": "A",
-      "remark": "",
-      "created_at": "2026-07-24T17:11:23.154480"
-    },
-    {
       "id": "SEL_1784893714027",
       "farmer_name": "ram",
       "phone_number": "5754878764",
