@@ -38,7 +38,7 @@
     }
 
     .container {
-      max-width: 920px;
+      max-width: 960px;
       margin: 0 auto;
       background: var(--paper-card);
       padding: 0 0 32px;
@@ -48,7 +48,6 @@
       overflow: hidden;
     }
 
-    /* -- Header: a small plowed field motif behind the title -- */
     .portal-header {
       position: relative;
       background: linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 100%);
@@ -116,7 +115,7 @@
       color: var(--soil);
     }
 
-    input[type="text"], input[type="password"] {
+    input[type="text"], input[type="password"], select {
       width: 100%;
       padding: 11px 13px;
       border: 1.5px solid var(--line);
@@ -129,14 +128,10 @@
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    input[type="text"]:focus, input[type="password"]:focus {
+    input[type="text"]:focus, input[type="password"]:focus, select:focus {
       outline: none;
       border-color: var(--forest);
       box-shadow: 0 0 0 3px rgba(35, 72, 50, 0.12);
-    }
-
-    input[type="text"]::placeholder, input[type="password"]::placeholder {
-      color: #a79b7d;
     }
 
     .item-row {
@@ -181,7 +176,6 @@
       background: var(--forest);
       box-shadow: 0 10px 22px -12px rgba(35, 72, 50, 0.55);
     }
-    button.btn-save:hover { background: var(--forest-deep); }
 
     hr {
       border: none;
@@ -222,11 +216,35 @@
 
     .card h3 .badge-icon svg { width: 15px; height: 15px; color: #16301f; }
 
-    #msp-list .item-row, #schemes-list .item-row {
+    /* Seller Grid Layout */
+    .seller-card {
       background: #fffefb;
       border: 1px solid var(--line);
-      padding: 8px 10px;
-      border-radius: 8px;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .seller-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .seller-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .seller-card-header span {
+      font-weight: bold;
+      font-size: 13px;
+      color: var(--soil);
     }
 
     #status {
@@ -236,7 +254,6 @@
       min-height: 18px;
     }
 
-    /* small wheat-sprig divider used as a section signature */
     .sprig-divider {
       display: flex;
       align-items: center;
@@ -256,7 +273,7 @@
     @media (max-width: 560px) {
       .portal-header, .portal-body { padding-left: 20px; padding-right: 20px; }
       .item-row { flex-wrap: wrap; }
-      .item-row input { min-width: 140px; }
+      .seller-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -269,7 +286,7 @@
         शासन ते शेतकरी
       </div>
       <h2 class="portal-title">Farmer App Admin Panel</h2>
-      <p class="portal-subtitle">MSP दर आणि योजना अपडेट करा — थेट गाव पर्यंत पोहोचणारी माहिती.</p>
+      <p class="portal-subtitle">MSP दर, योजना आणि विक्री विनंत्या अपडेट करा — थेट गाव पर्यंत पोहोचणारी माहिती.</p>
     </div>
 
     <div class="portal-body">
@@ -279,9 +296,10 @@
         <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
       </div>
 
-      <button class="btn-fetch" onclick="loadData()">Fetch Latest Data</button>
+      <button class="btn-fetch" onclick="loadAllData()">Fetch Latest Data</button>
       <hr>
 
+      <!-- MSP Section -->
       <div class="card">
         <h3>
           <span class="badge-icon">
@@ -297,6 +315,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20V4M12 4 8 8M12 4l4 4M12 10 8 13M12 10l4 3M12 15l-3 3M12 15l3 3"/></svg>
       </div>
 
+      <!-- Schemes Section -->
       <div class="card">
         <h3>
           <span class="badge-icon">
@@ -308,7 +327,23 @@
         <button onclick="addSchemeRow()">+ Add Scheme</button>
       </div>
 
-      <button class="btn-save" onclick="saveData()">Save &amp; Update App Data</button>
+      <div class="sprig-divider">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20V4M12 4 8 8M12 4l4 4M12 10 8 13M12 10l4 3M12 15l-3 3M12 15l3 3"/></svg>
+      </div>
+
+      <!-- Sellers Requests Section -->
+      <div class="card">
+        <h3>
+          <span class="badge-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          Seller Requests (विक्री विनंत्या)
+        </h3>
+        <div id="sellers-list"></div>
+        <button onclick="addSellerRow()">+ Add New Seller</button>
+      </div>
+
+      <button class="btn-save" onclick="saveAllData()">Save &amp; Update App Data</button>
       <div id="status"></div>
 
     </div>
@@ -317,35 +352,42 @@
   <script>
     const repoOwner = "yeduresanju-netizen";
     const repoName = "gov-to-farmer-data-base";
-    const filePath = "data.json";
-    let fileSha = "";
+    const dataFilePath = "data.json";
+    const sellersFilePath = "sellers.json";
 
-    async function loadData() {
+    let dataFileSha = "";
+    let sellersFileSha = "";
+
+    async function loadAllData() {
       const token = document.getElementById("token").value;
       const status = document.getElementById("status");
       status.style.color = "blue";
       status.innerText = "Fetching data...";
 
       try {
-        const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
-          headers: token ? { Authorization: `token ${token}` } : {}
-        });
+        const headers = token ? { Authorization: `token ${token}` } : {};
 
-        if (!res.ok) throw new Error("Failed to fetch data");
+        // Fetch data.json
+        const resData = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`, { headers });
+        if (!resData.ok) throw new Error("Failed to fetch data.json");
+        const dataJson = await resData.json();
+        dataFileSha = dataJson.sha;
+        const decodedData = decodeUtf8Base64(dataJson.content);
 
-        const data = await res.json();
-        fileSha = data.sha;
+        renderMsp(decodedData.msp_items || []);
+        renderSchemes(decodedData.schemes || []);
 
-        // --- FIXED MARATHI UTF-8 DECODING HERE ---
-        const binaryString = atob(data.content.replace(/\s/g, ''));
-        const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
-        const jsonText = new TextDecoder('utf-8').decode(bytes);
-        const decodedContent = JSON.parse(jsonText);
+        // Fetch sellers.json
+        const resSellers = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${sellersFilePath}`, { headers });
+        if (!resSellers.ok) throw new Error("Failed to fetch sellers.json");
+        const sellersJson = await resSellers.json();
+        sellersFileSha = sellersJson.sha;
+        const decodedSellers = decodeUtf8Base64(sellersJson.content);
 
-        renderMsp(decodedContent.msp_items || []);
-        renderSchemes(decodedContent.schemes || []);
+        renderSellers(decodedSellers.sellers || decodedSellers.data || []);
+
         status.style.color = "green";
-        status.innerText = "Data loaded successfully!";
+        status.innerText = "All data loaded successfully!";
       } catch (err) {
         console.error(err);
         status.style.color = "red";
@@ -353,6 +395,20 @@
       }
     }
 
+    function decodeUtf8Base64(base64Str) {
+      const binaryString = atob(base64Str.replace(/\s/g, ''));
+      const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+      return JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    }
+
+    function encodeUtf8Base64(jsonObj) {
+      const jsonString = JSON.stringify(jsonObj, null, 2);
+      const utf8Bytes = new TextEncoder().encode(jsonString);
+      const binaryString = String.fromCharCode(...utf8Bytes);
+      return btoa(binaryString);
+    }
+
+    // --- MSP Logic ---
     function renderMsp(items) {
       const container = document.getElementById("msp-list");
       container.innerHTML = "";
@@ -371,6 +427,7 @@
       container.appendChild(div);
     }
 
+    // --- Schemes Logic ---
     function renderSchemes(schemes) {
       const container = document.getElementById("schemes-list");
       container.innerHTML = "";
@@ -391,7 +448,78 @@
       container.appendChild(div);
     }
 
-    async function saveData() {
+    // --- Sellers Logic ---
+    function renderSellers(sellers) {
+      const container = document.getElementById("sellers-list");
+      container.innerHTML = "";
+      sellers.forEach(s => addSellerRow(s));
+    }
+
+    function addSellerRow(seller = {}) {
+      const container = document.getElementById("sellers-list");
+      const div = document.createElement("div");
+      div.className = "seller-card seller-item";
+
+      const id = seller.id || "SEL-" + Date.now();
+      const createdAt = seller.created_at || new Date().toISOString();
+      const status = seller.status || "प्रलंबित";
+
+      div.innerHTML = `
+        <div class="seller-card-header">
+          <span>ID: ${id}</span>
+          <button class="btn-danger" onclick="this.closest('.seller-card').remove()">Delete Request</button>
+        </div>
+        <input type="hidden" class="sel-id" value="${id}">
+        <input type="hidden" class="sel-created" value="${createdAt}">
+        <div class="seller-grid">
+          <div>
+            <label>Farmer Name (शेतकऱ्याचे नाव)</label>
+            <input type="text" class="sel-name" value="${seller.farmer_name || ''}" placeholder="उदा. रमेश पाटील">
+          </div>
+          <div>
+            <label>Phone Number (फोन नंबर)</label>
+            <input type="text" class="sel-phone" value="${seller.phone_number || ''}" placeholder="उदा. 9876543210">
+          </div>
+          <div>
+            <label>Crop (पिक)</label>
+            <input type="text" class="sel-crop" value="${seller.crop_name || seller.crop || ''}" placeholder="उदा. गहू">
+          </div>
+          <div>
+            <label>Quantity Quintal (क्विंटल)</label>
+            <input type="text" class="sel-qty" value="${seller.quantity_quintal || ''}" placeholder="उदा. 15">
+          </div>
+          <div>
+            <label>Grade (ग्रेड)</label>
+            <input type="text" class="sel-grade" value="${seller.grade || 'A'}" placeholder="उदा. A">
+          </div>
+          <div>
+            <label>Price/Quintal (दर/क्विंटल)</label>
+            <input type="text" class="sel-price" value="${seller.price_per_quintal || ''}" placeholder="उदा. 2275">
+          </div>
+          <div>
+            <label>Location (खरेदी केंद्र)</label>
+            <input type="text" class="sel-location" value="${seller.location || ''}" placeholder="उदा. पुणे">
+          </div>
+          <div>
+            <label>Status (स्थिती)</label>
+            <select class="sel-status">
+              <option value="प्रलंबित" ${status === 'प्रलंबित' ? 'selected' : ''}>प्रलंबित</option>
+              <option value="मंजूर" ${status === 'मंजूर' ? 'selected' : ''}>मंजूर</option>
+              <option value="नामंजूर" ${status === 'नामंजूर' ? 'selected' : ''}>नामंजूर</option>
+              <option value="पूर्ण" ${status === 'पूर्ण' ? 'selected' : ''}>पूर्ण</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label>Remark (टीप)</label>
+          <input type="text" class="sel-remark" value="${seller.remark || ''}" placeholder="उदा. कागदपत्रे पडताळणी बाकी">
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    // --- Save Logic ---
+    async function saveAllData() {
       const token = document.getElementById("token").value;
       const status = document.getElementById("status");
 
@@ -400,56 +528,82 @@
         return;
       }
 
-      const msp_items = Array.from(document.querySelectorAll(".msp-item")).map(el => ({
-        title: el.querySelector(".msp-title").value,
-        price: el.querySelector(".msp-price").value
-      }));
-
-      const schemes = Array.from(document.querySelectorAll(".scheme-item")).map(el => ({
-        badge: el.querySelector(".s-badge").value,
-        title: el.querySelector(".s-title").value,
-        subtitle: el.querySelector(".s-sub").value,
-        icon_type: el.querySelector(".s-icon").value
-      }));
-
-      const payload = { msp_items, schemes };
-      
-      // --- FIXED MARATHI UTF-8 ENCODING FOR SAVE HERE ---
-      const jsonString = JSON.stringify(payload, null, 2);
-      const utf8Bytes = new TextEncoder().encode(jsonString);
-      const binaryString = String.fromCharCode(...utf8Bytes);
-      const contentEncoded = btoa(binaryString);
-
       status.style.color = "blue";
       status.innerText = "Saving to GitHub...";
 
       try {
-        const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
-          method: "PUT",
-          headers: {
-            "Authorization": `token ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: "Update dashboard data via Admin Panel",
-            content: contentEncoded,
-            sha: fileSha
-          })
-        });
+        // Build data.json payload
+        const msp_items = Array.from(document.querySelectorAll(".msp-item")).map(el => ({
+          title: el.querySelector(".msp-title").value,
+          price: el.querySelector(".msp-price").value
+        }));
 
-        if (res.ok) {
-          const resData = await res.json();
-          fileSha = resData.content.sha;
-          status.style.color = "green";
-          status.innerText = "Data updated successfully on GitHub!";
+        const schemes = Array.from(document.querySelectorAll(".scheme-item")).map(el => ({
+          badge: el.querySelector(".s-badge").value,
+          title: el.querySelector(".s-title").value,
+          subtitle: el.querySelector(".s-sub").value,
+          icon_type: el.querySelector(".s-icon").value
+        }));
+
+        const dataPayload = { msp_items, schemes };
+
+        // Build sellers.json payload
+        const sellers = Array.from(document.querySelectorAll(".seller-item")).map(el => ({
+          id: el.querySelector(".sel-id").value,
+          farmer_name: el.querySelector(".sel-name").value,
+          phone_number: el.querySelector(".sel-phone").value,
+          crop_name: el.querySelector(".sel-crop").value,
+          quantity_quintal: parseFloat(el.querySelector(".sel-qty").value) || 0,
+          grade: el.querySelector(".sel-grade").value,
+          price_per_quintal: el.querySelector(".sel-price").value,
+          location: el.querySelector(".sel-location").value,
+          remark: el.querySelector(".sel-remark").value,
+          created_at: el.querySelector(".sel-created").value,
+          status: el.querySelector(".sel-status").value
+        }));
+
+        const sellersPayload = { sellers };
+
+        // Save data.json
+        const resData = await updateGithubFile(dataFilePath, dataPayload, dataFileSha, token);
+        if (resData.ok) {
+          const resJson = await resData.json();
+          dataFileSha = resJson.content.sha;
         } else {
-          throw new Error("Failed to save");
+          throw new Error("Failed to save data.json");
         }
+
+        // Save sellers.json
+        const resSellers = await updateGithubFile(sellersFilePath, sellersPayload, sellersFileSha, token);
+        if (resSellers.ok) {
+          const resJson = await resSellers.json();
+          sellersFileSha = resJson.content.sha;
+        } else {
+          throw new Error("Failed to save sellers.json");
+        }
+
+        status.style.color = "green";
+        status.innerText = "Data updated successfully on GitHub!";
       } catch (err) {
         console.error(err);
         status.style.color = "red";
         status.innerText = "Error updating data. Make sure token has repository write access.";
       }
+    }
+
+    async function updateGithubFile(path, contentObj, sha, token) {
+      return fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${path}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `token ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: `Update ${path} via Admin Panel`,
+          content: encodeUtf8Base64(contentObj),
+          sha: sha
+        })
+      });
     }
   </script>
 </body>
