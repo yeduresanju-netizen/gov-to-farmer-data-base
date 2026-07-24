@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Portal - Government to Farmer Data</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; margin: 0; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h2 { color: #277E3C; margin-top: 0; }
+    .field { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+    .item-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+    .item-row input { flex: 1; }
+    button { background: #277E3C; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    button:hover { background: #1e632f; }
+    button.btn-danger { background: #dc3545; }
+    button.btn-danger:hover { background: #bd2130; }
+    .card { border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; background: #fafafa; }
+    #status { font-weight: bold; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Farmer App Admin Panel</h2>
+    
+    <div class="field">
+      <label for="token">GitHub Personal Access Token (PAT):</label>
+      <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    </div>
+
+    <button onclick="loadData()">Fetch Latest Data</button>
+    <hr>
+
+    <div class="card">
+      <h3>MSP Items (हमीभाव)</h3>
+      <div id="msp-list"></div>
+      <button onclick="addMspRow()">+ Add Item</button>
+    </div>
+
+    <div class="card">
+      <h3>Live Schemes (योजना)</h3>
+      <div id="schemes-list"></div>
+      <button onclick="addSchemeRow()">+ Add Scheme</button>
+    </div>
+
+    <button onclick="saveData()" style="font-size: 16px; width: 100%; padding: 12px;">Save & Update App Data</button>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    const repoOwner = "yeduresanju-netizen";
+    const repoName = "gov-to-farmer-data-base";
+    const filePath = "data.json";
+    let fileSha = "";
+
+    async function loadData() {
+      const token = document.getElementById("token").value;
+      const status = document.getElementById("status");
+      status.style.color = "blue";
+      status.innerText = "Fetching data...";
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+          headers: token ? { Authorization: `token ${token}` } : {}
+        });
+        const data = await res.json();
+        fileSha = data.sha;
+        const decodedContent = JSON.parse(atob(data.content));
+
+        renderMsp(decodedContent.msp_items || []);
+        renderSchemes(decodedContent.schemes || []);
+        status.style.color = "green";
+        status.innerText = "Data loaded successfully!";
+      } catch (err) {
+        status.style.color = "red";
+        status.innerText = "Error loading data. Check token/repository permissions.";
+      }
+    }
+
+    function renderMsp(items) {
+      const container = document.getElementById("msp-list");
+      container.innerHTML = "";
+      items.forEach(item => addMspRow(item.title, item.price));
+    }
+
+    function addMspRow(title = "", price = "") {
+      const container = document.getElementById("msp-list");
+      const div = document.createElement("div");
+      div.className = "item-row msp-item";
+      div.innerHTML = `
+        <input type="text" class="msp-title" placeholder="Crop Title (e.g. गहू)" value="${title}">
+        <input type="text" class="msp-price" placeholder="Price (e.g. ₹ 2275 / क्विंटल)" value="${price}">
+        <button class="btn-danger" onclick="this.parentElement.remove()">Delete</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function renderSchemes(schemes) {
+      const container = document.getElementById("schemes-list");
+      container.innerHTML = "";
+      schemes.forEach(s => addSchemeRow(s.badge, s.title, s.subtitle, s.icon_type));
+    }
+
+    function addSchemeRow(badge = "LIVE योजना", title = "", subtitle = "", icon_type = "wallet") {
+      const container = document.getElementById("schemes-list");
+      const div = document.createElement("div");
+      div.className = "item-row scheme-item";
+      div.innerHTML = `
+        <input type="text" class="s-badge" placeholder="Badge" value="${badge}">
+        <input type="text" class="s-title" placeholder="Scheme Title" value="${title}">
+        <input type="text" class="s-sub" placeholder="Subtitle" value="${subtitle}">
+        <input type="text" class="s-icon" placeholder="Icon (wallet/agriculture)" value="${icon_type}">
+        <button class="btn-danger" onclick="this.parentElement.remove()">Delete</button>
+      `;
+      container.appendChild(div);
+    }
+
+    async function saveData() {
+      const token = document.getElementById("token").value;
+      const status = document.getElementById("status");
+
+      if (!token) {
+        alert("Please enter a valid GitHub Personal Access Token.");
+        return;
+      }
+
+      const msp_items = Array.from(document.querySelectorAll(".msp-item")).map(el => ({
+        title: el.querySelector(".msp-title").value,
+        price: el.querySelector(".msp-price").value
+      }));
+
+      const schemes = Array.from(document.querySelectorAll(".scheme-item")).map(el => ({
+        badge: el.querySelector(".s-badge").value,
+        title: el.querySelector(".s-title").value,
+        subtitle: el.querySelector(".s-sub").value,
+        icon_type: el.querySelector(".s-icon").value
+      }));
+
+      const payload = { msp_items, schemes };
+      const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+
+      status.style.color = "blue";
+      status.innerText = "Saving to GitHub...";
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `token ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: "Update dashboard data via Admin Panel",
+            content: contentEncoded,
+            sha: fileSha
+          })
+        });
+
+        if (res.ok) {
+          const resData = await res.json();
+          fileSha = resData.content.sha;
+          status.style.color = "green";
+          status.innerText = "Data updated successfully on GitHub!";
+        } else {
+          throw new Error("Failed to save");
+        }
+      } catch (err) {
+        status.style.color = "red";
+        status.innerText = "Error updating data. Make sure token has repository write access.";
+      }
+    }
+  </script>
+</body>
+</html>
