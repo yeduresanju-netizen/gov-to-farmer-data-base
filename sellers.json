@@ -10,11 +10,12 @@
       "price_per_quintal": "₹ 1234",
       "location": "nanded",
       "remark": "nanded test data",
-      "created_at": "2026-07-24T11:48:34.027819Z"
+      "created_at": "2026-07-24T11:48:34.027819Z",
+      "status": "प्रलंबित"
     },
     {
       "id": "SEL_1784894812671",
-      "farmer_name": "tst",
+      "farmer_name": "ram sham lakahn",
       "phone_number": "5867786225",
       "crop_name": "सोयाबीन",
       "quantity_quintal": 96,
@@ -22,7 +23,8 @@
       "price_per_quintal": "₹ 12500",
       "location": "fff",
       "remark": "fff",
-      "created_at": "2026-07-24T12:06:52.671884Z"
+      "created_at": "2026-07-24T12:06:52.671884Z",
+      "status": "प्रलंबित"
     }
   ]
 }
