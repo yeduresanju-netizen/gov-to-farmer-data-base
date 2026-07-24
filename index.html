@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Portal - Government to Farmer Data</title>
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; margin: 0; padding: 20px; }
@@ -64,15 +65,24 @@
         const res = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
           headers: token ? { Authorization: `token ${token}` } : {}
         });
+
+        if (!res.ok) throw new Error("Failed to fetch data");
+
         const data = await res.json();
         fileSha = data.sha;
-        const decodedContent = JSON.parse(atob(data.content));
+
+        // --- FIXED MARATHI UTF-8 DECODING HERE ---
+        const binaryString = atob(data.content.replace(/\s/g, ''));
+        const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+        const jsonText = new TextDecoder('utf-8').decode(bytes);
+        const decodedContent = JSON.parse(jsonText);
 
         renderMsp(decodedContent.msp_items || []);
         renderSchemes(decodedContent.schemes || []);
         status.style.color = "green";
         status.innerText = "Data loaded successfully!";
       } catch (err) {
+        console.error(err);
         status.style.color = "red";
         status.innerText = "Error loading data. Check token/repository permissions.";
       }
@@ -138,7 +148,12 @@
       }));
 
       const payload = { msp_items, schemes };
-      const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+      
+      // --- FIXED MARATHI UTF-8 ENCODING FOR SAVE HERE ---
+      const jsonString = JSON.stringify(payload, null, 2);
+      const utf8Bytes = new TextEncoder().encode(jsonString);
+      const binaryString = String.fromCharCode(...utf8Bytes);
+      const contentEncoded = btoa(binaryString);
 
       status.style.color = "blue";
       status.innerText = "Saving to GitHub...";
@@ -166,6 +181,7 @@
           throw new Error("Failed to save");
         }
       } catch (err) {
+        console.error(err);
         status.style.color = "red";
         status.innerText = "Error updating data. Make sure token has repository write access.";
       }
