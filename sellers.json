@@ -11,6 +11,18 @@
       "location": "nanded",
       "remark": "nanded test data",
       "created_at": "2026-07-24T11:48:34.027819Z"
+    },
+    {
+      "id": "SEL_1784894812671",
+      "farmer_name": "tst",
+      "phone_number": "5867786225",
+      "crop_name": "सोयाबीन",
+      "quantity_quintal": 96,
+      "grade": "C",
+      "price_per_quintal": "₹ 12500",
+      "location": "fff",
+      "remark": "fff",
+      "created_at": "2026-07-24T12:06:52.671884Z"
     }
   ]
 }
