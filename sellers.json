@@ -25,6 +25,18 @@
       "remark": "fff",
       "created_at": "2026-07-24T12:06:52.671884Z",
       "status": "प्रलंबित"
+    },
+    {
+      "id": "SEL_1785129601478",
+      "farmer_name": "ajay bhise",
+      "phone_number": "5862542663",
+      "crop_name": "तूर",
+      "quantity_quintal": 0,
+      "grade": "A",
+      "price_per_quintal": "₹ 5000",
+      "location": "Nanded",
+      "remark": "",
+      "created_at": "2026-07-27T05:20:01.480673Z"
     }
   ]
 }
