@@ -61,6 +61,18 @@
       "location": "Nanded",
       "remark": "",
       "created_at": "2026-07-27T05:20:21.129812Z"
+    },
+    {
+      "id": "SEL_1785147543252",
+      "farmer_name": "shubham",
+      "phone_number": "5494646946",
+      "crop_name": "तांदूळ (सामान्य)",
+      "quantity_quintal": 50,
+      "grade": "A",
+      "price_per_quintal": "₹ 8000",
+      "location": "Nanded",
+      "remark": "",
+      "created_at": "2026-07-27T10:19:03.253687Z"
     }
   ]
 }
