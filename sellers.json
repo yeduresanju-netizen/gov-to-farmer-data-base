@@ -127,6 +127,18 @@
       "location": "Nanded",
       "remark": "hk dkdvsj",
       "created_at": "2026-07-28T11:16:36.251260Z"
+    },
+    {
+      "id": "SEL_1785275851036",
+      "farmer_name": "Yash Matre",
+      "phone_number": "9359636762",
+      "crop_name": "तूर",
+      "quantity_quintal": 90,
+      "grade": "A",
+      "price_per_quintal": "₹ 7100",
+      "location": "Washim",
+      "remark": "kahi nahi",
+      "created_at": "2026-07-28T21:57:31.036462Z"
     }
   ]
 }
