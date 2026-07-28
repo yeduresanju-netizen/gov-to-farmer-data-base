@@ -115,6 +115,18 @@
       "location": "Nanded",
       "remark": "hk dkdvsj",
       "created_at": "2026-07-28T11:16:23.898450Z"
+    },
+    {
+      "id": "SEL_1785237396251",
+      "farmer_name": "bajuu",
+      "phone_number": "8010462654",
+      "crop_name": "बाजरी",
+      "quantity_quintal": 80,
+      "grade": "B",
+      "price_per_quintal": "₹ 4400",
+      "location": "Nanded",
+      "remark": "hk dkdvsj",
+      "created_at": "2026-07-28T11:16:36.251260Z"
     }
   ]
 }
