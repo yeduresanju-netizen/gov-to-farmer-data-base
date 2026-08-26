@@ -167,6 +167,18 @@
       "location": "Nanded",
       "remark": "",
       "created_at": "2026-08-02T06:30:09.062177Z"
+    },
+    {
+      "id": "SEL_1787750356197",
+      "farmer_name": "Om Gawande",
+      "phone_number": "123454697",
+      "crop_name": "गहू",
+      "quantity_quintal": 50,
+      "grade": "A",
+      "price_per_quintal": "₹ 2500",
+      "location": "Washim",
+      "remark": "vajan",
+      "created_at": "2026-08-26T13:19:16.197139Z"
     }
   ]
 }
