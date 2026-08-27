@@ -179,6 +179,18 @@
       "location": "Washim",
       "remark": "vajan",
       "created_at": "2026-08-26T13:19:16.197139Z"
+    },
+    {
+      "id": "SEL_1787834866421",
+      "farmer_name": "sonu narwade",
+      "phone_number": "9579041983",
+      "crop_name": "तूर",
+      "quantity_quintal": 2,
+      "grade": "C",
+      "price_per_quintal": "₹ 2500",
+      "location": "nanded",
+      "remark": "good",
+      "created_at": "2026-08-27T12:47:46.421563Z"
     }
   ]
 }
