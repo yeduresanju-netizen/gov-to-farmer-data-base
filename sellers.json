@@ -191,6 +191,18 @@
       "location": "nanded",
       "remark": "good",
       "created_at": "2026-08-27T12:47:46.421563Z"
+    },
+    {
+      "id": "SEL_1788111929666",
+      "farmer_name": "Pooja matre",
+      "phone_number": "7946949464",
+      "crop_name": "तूर",
+      "quantity_quintal": 100,
+      "grade": "A",
+      "price_per_quintal": "₹ 10000",
+      "location": "washim",
+      "remark": "hsj",
+      "created_at": "2026-08-30T17:45:29.666641Z"
     }
   ]
 }
