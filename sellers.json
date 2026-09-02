@@ -203,6 +203,18 @@
       "location": "washim",
       "remark": "hsj",
       "created_at": "2026-08-30T17:45:29.666641Z"
+    },
+    {
+      "id": "SEL_1788346690177",
+      "farmer_name": "tirupati",
+      "phone_number": "8010462654",
+      "crop_name": "सोयाबीन",
+      "quantity_quintal": 80,
+      "grade": "B",
+      "price_per_quintal": "₹ 5000",
+      "location": "nanded",
+      "remark": "",
+      "created_at": "2026-09-02T10:58:10.178002Z"
     }
   ]
 }
